@@ -4,7 +4,7 @@ Created on Wed Apr  6 09:09:43 2022
 save to a C drive location to make it faster and avoid the "already exists repladce yes/no question on each download"
 The weekly download list contains mostly reports we already have that need to be overwritten for some reason
 
-This is python 3 code written and run in Spyder 
+This is python 3 code written and run in Eclipse/pyDev for Eclipse 
 
 in chrome:
     settings, advanced, set download directory
