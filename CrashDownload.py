@@ -16,8 +16,8 @@ in chrome:
     save
     
 Sleep times are used to give the web page time to load before clicking the download button and to pause for manual interaction; 
-    at home on google fiber a sleep time of 3 seconds is sufficient
-    at work an intial sleep time of 5 or more seconds is needed, sometimes pages take 10 seconds or more
+    at home on google fiber a sleep time of 2 seconds is sufficient
+    at work an intial sleep time of 3.5 or more seconds is needed, sometimes pages take 10 seconds or more and the process will need to be stopped and rerun with an edited list
 
 you can also add a breakpoint in the for loop and step through each one individually in debug mode, setting sleep time to 1 or 0
 
@@ -35,6 +35,7 @@ import webbrowser
 from time import sleep
 import pyperclip
 import ctypes
+from numpy import loadtxt
 
 ws = r'//citydata/public/MSO_Engr/KDOT/CrashReports/'
 #move the list local while hte VPN is down
@@ -46,9 +47,9 @@ download_folder = r'C:/Users/kgonterwitz/Downloads/crashdownload20220726'
 #if a file isnt downloaded in time it can be quickly retrieved from the TRS url
 index = 0
 
-text_file = ws+"DISTINCT_LIST.txt"
+text_file = ws+"KDOT09261031.txt"
 #text_file = ws+"KDOTtest.txt"
-from numpy import loadtxt
+
 lines = loadtxt(text_file, dtype=str, comments="#", delimiter=" | ", unpack=False)
 
 def click():
@@ -63,9 +64,19 @@ for line in lines:
     pyperclip.copy(file_name)
     url = "https://portal.kstrs.org/private/PDF.aspx?itemID="+str((line[1:2]))[2:10]+"&VerNbr=1&rType=PDF&rSource=AccidentLib"
     webbrowser.open(url, new=0, autoraise=True)
-    sleep(2.5)
+    sleep(3)
     click()
     sleep(1)
     #pyperclip.paste()
-    sleep(0.5)
-
+    sleep(2)
+    if not index % 100:
+        print('20 second break')
+        sleep(20)
+        print('break time is over, back to work')
+        sleep(1)
+        print('in 3...')
+        sleep(1)
+        print('2..')
+        sleep(1)
+        print('1')
+        sleep(1)
