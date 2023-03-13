@@ -6,6 +6,15 @@ The weekly download list contains mostly reports we already have that need to be
 
 This is python 3 code written and run in Eclipse/pyDev for Eclipse 
 
+edit 3/1323
+in chrome:
+    go to chrome://settings/content/pdfDocuments
+    set browser to auto download pdfs instead of auto open
+    this downloads the pdf automatically, the code was edited to rename the auto downloaded pdf each time
+    chrome://settings/content/pdfDocuments
+    the clicking and pasting is no longer necessary
+    also the script will stop if a download or script process errors 
+
 in chrome:
     settings, advanced, set download directory
     make it so PDFS dont auto open in bluebeam
@@ -37,6 +46,7 @@ import webbrowser
 from time import sleep
 import pyperclip
 import ctypes
+import os
 from numpy import loadtxt
 
 #ws = r'//citydata/public/MSO_Engr/KDOT/CrashReports/'
@@ -49,7 +59,7 @@ download_folder = r'C:/Users/kgonterwitz/Downloads/crashdownload20220726'
 #if a file isnt downloaded in time it can be quickly retrieved from the TRS url
 index = 0
 
-text_file = ws+"KDOT20230123.txt"
+text_file = ws+"KDOT20230313KG2.txt"
 #text_file = ws+"KDOTtest.txt"
 
 lines = loadtxt(text_file, dtype=str, comments="#", delimiter=" | ", unpack=False)
@@ -74,11 +84,12 @@ for line in lines:
     url = "https://portal.kstrs.org/private/PDF.aspx?itemID="+str((line[1:2]))[2:10]+"&VerNbr=1&rType=PDF&rSource=AccidentLib"
     webbrowser.open(url, new=0, autoraise=True)
     sleep(6)
-    click()
+    #click()
+    os.rename(ws+'PDF.pdf', ws+file_name)
     sleep(2)
     #clickDown()
     #pyperclip.paste()
-    sleep(2)
+    #sleep(2)
     if not index % 20:
         print('20 second break')
         sleep(20)
