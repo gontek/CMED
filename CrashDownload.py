@@ -27,6 +27,8 @@ copy downloaded files to \\citydata\public\MSO_Engr\KDOT\CrashReports
 
 log into TRS at https://portal.kstrs.org/private/SimpleSearch.aspx
 
+added pause after each 20 crashes for browser maintenance
+
 @author: kgonterwitz
 """
 
@@ -37,7 +39,7 @@ import pyperclip
 import ctypes
 from numpy import loadtxt
 
-ws = r'//citydata/public/MSO_Engr/KDOT/CrashReports/'
+#ws = r'//citydata/public/MSO_Engr/KDOT/CrashReports/'
 #move the list local while hte VPN is down
 ws = r'C:/Users/kgonterwitz/Downloads/crashdownload20220726/'
 download_folder = r'C:/Users/kgonterwitz/Downloads/crashdownload20220726'
@@ -47,13 +49,20 @@ download_folder = r'C:/Users/kgonterwitz/Downloads/crashdownload20220726'
 #if a file isnt downloaded in time it can be quickly retrieved from the TRS url
 index = 0
 
-text_file = ws+"KDOT09261031.txt"
+text_file = ws+"KDOT20230123.txt"
 #text_file = ws+"KDOTtest.txt"
 
 lines = loadtxt(text_file, dtype=str, comments="#", delimiter=" | ", unpack=False)
 
 def click():
     ctypes.windll.user32.SetCursorPos(1805, 83)
+    ctypes.windll.user32.mouse_event(2, 0, 0, 0,0) # left down
+    ctypes.windll.user32.mouse_event(4, 0, 0, 0,0) # left up
+    
+def clickDown():
+    ctypes.windll.user32.SetCursorPos(232, 685)
+    ctypes.windll.user32.mouse_event(2, 0, 0, 0,0) # left down
+    ctypes.windll.user32.mouse_event(4, 0, 0, 0,0) # left up
     ctypes.windll.user32.mouse_event(2, 0, 0, 0,0) # left down
     ctypes.windll.user32.mouse_event(4, 0, 0, 0,0) # left up
 
@@ -64,12 +73,13 @@ for line in lines:
     pyperclip.copy(file_name)
     url = "https://portal.kstrs.org/private/PDF.aspx?itemID="+str((line[1:2]))[2:10]+"&VerNbr=1&rType=PDF&rSource=AccidentLib"
     webbrowser.open(url, new=0, autoraise=True)
-    sleep(3)
+    sleep(6)
     click()
-    sleep(1)
+    sleep(2)
+    #clickDown()
     #pyperclip.paste()
     sleep(2)
-    if not index % 100:
+    if not index % 20:
         print('20 second break')
         sleep(20)
         print('break time is over, back to work')
